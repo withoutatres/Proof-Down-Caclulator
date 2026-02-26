@@ -1,1 +1,3 @@
-# Proof-Down-Caclulator
+# Proof Down Calculator
+A calculator application
+## Features
