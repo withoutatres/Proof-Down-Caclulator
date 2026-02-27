@@ -44,7 +44,7 @@ pour_size_oz = pour_size if unit == "oz" else pour_size / OZ_TO_ML
 
 # ---------- STRENGTH INPUTS ----------
 if strength_mode == "Proof":
-    default_start = presets[preset_choice] if presets[preset_choice] else 135
+    default_start = presets[preset_choice] if presets[preset_choice] else 130
     starting_strength = st.number_input(
         "Starting Proof",
         min_value=0,
@@ -55,7 +55,7 @@ if strength_mode == "Proof":
         "Desired Proof",
         min_value=0,
         step=1,
-        value=80
+        value=110
     )
 
     starting_abv = starting_strength / 2 / 100
