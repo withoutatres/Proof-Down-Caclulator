@@ -107,10 +107,8 @@ else:
     alcohol_fraction = alcohol_oz / final_volume_oz
 
     st.subheader("Final Mixture")
-   st.subheader("Final Mixture")
-
-colored_bar("Alcohol", alcohol_fraction, "#8B4513")  # brown
-colored_bar("Water", water_fraction, "#4F81BD")     # muted blue
+    colored_bar("Alcohol", alcohol_fraction, "#8B4513")  # brown
+    colored_bar("Water", water_fraction, "#4F81BD")     # muted blue
 
     # ---------- DETAILS ----------
     with st.expander("Back of the Envelope"):
