@@ -123,12 +123,25 @@ else:
     st.write(f"Add **{water_display:.2f} {unit}** of water")
 
     # ---------- VISUAL INDICATOR ----------
-    water_fraction = water_oz / final_volume_oz
-    alcohol_fraction = alcohol_oz / final_volume_oz
+    final_abv = desired_proof / 2
+    water_pct = 100 - final_abv
 
-    st.subheader("Final Mixture Composition")
-    colored_bar("Alcohol Content", alcohol_fraction, "#8B4513")
-    colored_bar("Water Content", water_fraction, "#4F81BD")
+    import altair as alt
+    
+    chart = alt.Chart(composition_df).mark_bar().encode(
+    x=alt.X("Percentage:Q", scale=alt.Scale(domain=[0, 100])),
+    y=alt.Y("Component:N", sort=None),
+    color=alt.Color(
+        "Component:N",
+        scale=alt.Scale(
+            domain=["Alcohol Content", "Water Content"],
+            range=["#8B4513", "#A52A2A"]  # brown & red
+        ),
+        legend=None
+    )
+)
+
+st.altair_chart(chart, use_container_width=True)
 
     # ---------- DETAILS ----------
     with st.expander("Back of the Envelope"):
