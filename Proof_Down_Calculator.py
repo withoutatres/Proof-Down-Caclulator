@@ -2,12 +2,36 @@ import streamlit as st
 
 OZ_TO_ML = 29.5735
 
+# ---------- COLORED BAR HELPER ----------
+def colored_bar(label, fraction, color):
+    percent = int(fraction * 100)
+    st.markdown(
+        f"""
+        <div style="margin-bottom: 8px;">
+            <strong>{label}</strong>
+            <div style="
+                background-color: #eee;
+                border-radius: 6px;
+                height: 18px;
+                width: 100%;
+                overflow: hidden;
+            ">
+                <div style="
+                    background-color: {color};
+                    width: {percent}%;
+                    height: 100%;
+                    border-radius: 6px;
+                ">
+                </div>
+            </div>
+            <small>{percent}%</small>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+# ---------- TITLE ----------
 st.title("Without a Tres's Proof Down Calculator")
-
-st.subheader("Final Mixture")
-
-colored_bar("Alcohol", alcohol_fraction, "#8B4513")  # brown
-colored_bar("Water", water_fraction, "#4F81BD")     # muted blue
 
 # ---------- INPUT MODE ----------
 strength_mode = st.radio(
@@ -44,7 +68,6 @@ pour_size = st.number_input(
     value=1.0 if unit == "oz" else 30.0
 )
 
-# Convert pour size to oz internally
 pour_size_oz = pour_size if unit == "oz" else pour_size / OZ_TO_ML
 
 # ---------- STRENGTH INPUTS ----------
@@ -94,21 +117,18 @@ else:
     water_oz = final_volume_oz - pour_size_oz
     water_ml = water_oz * OZ_TO_ML
 
-    # Display results in selected unit
     water_display = water_oz if unit == "oz" else water_ml
 
     st.subheader("Results")
-    st.write(
-        f"Add **{water_display:.2f} {unit}** of water"
-    )
+    st.write(f"Add **{water_display:.2f} {unit}** of water")
 
     # ---------- VISUAL INDICATOR ----------
     water_fraction = water_oz / final_volume_oz
     alcohol_fraction = alcohol_oz / final_volume_oz
 
     st.subheader("Final Mixture")
-    colored_bar("Alcohol", alcohol_fraction, "#8B4513")  # brown
-    colored_bar("Water", water_fraction, "#4F81BD")     # muted blue
+    colored_bar("Alcohol", alcohol_fraction, "#8B4513")
+    colored_bar("Water", water_fraction, "#4F81BD")
 
     # ---------- DETAILS ----------
     with st.expander("Back of the Envelope"):
