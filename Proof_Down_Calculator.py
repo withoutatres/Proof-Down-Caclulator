@@ -139,9 +139,9 @@ else:
         ),
         legend=None
     )
-)
-
-st.altair_chart(chart, use_container_width=True)
+    )
+    
+    st.altair_chart(chart, use_container_width=True)
 
     # ---------- DETAILS ----------
     with st.expander("Back of the Envelope"):
