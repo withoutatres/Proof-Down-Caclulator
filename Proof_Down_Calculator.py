@@ -140,5 +140,7 @@ else:
 # ---------- DISCLAIMER ----------
 st.markdown("---")
 st.caption(
-    "All contents and calculation estimates are for entertainment purposes only."
+    "This calculator provides estimates for informational and entertainment purposes only. "
+    "Results may vary based on measurement accuracy and conditions. "
+    "Please drink responsibly 🥃"
 )
