@@ -4,6 +4,11 @@ OZ_TO_ML = 29.5735
 
 st.title("Without a Tres's Proof Down Calculator")
 
+st.subheader("Final Mixture")
+
+colored_bar("Alcohol", alcohol_fraction, "#8B4513")  # brown
+colored_bar("Water", water_fraction, "#4F81BD")     # muted blue
+
 # ---------- INPUT MODE ----------
 strength_mode = st.radio(
     "Alcohol Strength Input",
@@ -102,11 +107,10 @@ else:
     alcohol_fraction = alcohol_oz / final_volume_oz
 
     st.subheader("Final Mixture")
-    st.write("Alcohol")
-    st.progress(alcohol_fraction)
+   st.subheader("Final Mixture")
 
-    st.write("Water")
-    st.progress(water_fraction)
+colored_bar("Alcohol", alcohol_fraction, "#8B4513")  # brown
+colored_bar("Water", water_fraction, "#4F81BD")     # muted blue
 
     # ---------- DETAILS ----------
     with st.expander("Back of the Envelope"):
