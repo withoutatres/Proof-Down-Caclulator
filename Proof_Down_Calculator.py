@@ -126,9 +126,9 @@ else:
     water_fraction = water_oz / final_volume_oz
     alcohol_fraction = alcohol_oz / final_volume_oz
 
-    st.subheader("Final Mixture")
-    colored_bar("Alcohol", alcohol_fraction, "#8B4513")
-    colored_bar("Water", water_fraction, "#4F81BD")
+    st.subheader("Final Mixture Composition")
+    colored_bar("Alcohol Content", alcohol_fraction, "#8B4513")
+    colored_bar("Water Content", water_fraction, "#4F81BD")
 
     # ---------- DETAILS ----------
     with st.expander("Back of the Envelope"):
