@@ -41,11 +41,11 @@ else:
 
     st.subheader("Results")
     st.write(f"Add this much water: **{water_oz:.2f} oz**")
-    st.write(f"OR **{water_ml:.2f} mL**")
+    st.write(f"                  OR **{water_ml:.2f} mL**")
 
     with st.expander("Back of the Envelope"):
-        st.write(f"Starting Proof ABV: {starting_abv * 100:.2f}%")
-        st.write(f"Desired Proof ABV: {desired_abv * 100:.2f}%")
+        st.write(f"Starting ABV: {starting_abv * 100:.2f}%")
+        st.write(f"Desired ABV: {desired_abv * 100:.2f}%")
         st.write(f"Total Alcohol: {alcohol_oz:.3f} oz")
         st.write(f"Total Volume Needed: {final_volume_oz:.2f} oz")
 
