@@ -30,7 +30,7 @@ presets = {
     "Bottled in Bond (100 proof)": 100,
 }
 
-preset_choice = st.selectbox("Preset Spirit", presets.keys())
+preset_choice = st.selectbox("Preset Menu", presets.keys())
 
 # ---------- POUR SIZE ----------
 pour_size = st.number_input(
