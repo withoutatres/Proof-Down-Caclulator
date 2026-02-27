@@ -19,10 +19,15 @@ unit = st.selectbox(
 # ---------- PRESETS ----------
 presets = {
     "— None —": None,
-    "Barrel Proof Bourbon (~130 proof)": 130,
-    "Navy Strength (~114 proof)": 114,
-    "Overproof Rum (151 proof)": 151,
-    "Neutral Spirit (190 proof)": 190,
+    "Obtainium (151 proof)": 151,
+    "ALW (140 proof)": 140,
+    "Two Souls Bourbon (137 proof)": 137,
+    "Augusta Old Route 8 (135 proof)": 135,
+    "Old Bones Rye (133 proof)": 133,
+    "OFSBBP Rye (130 proof)": 130,
+    "Two Souls Pumpernickel (127 proof)": 127,
+    "Bookers (~122 proof)": 122,
+    "Bottled in Bond (100 proof)": 100,
 }
 
 preset_choice = st.selectbox("Preset Spirit", presets.keys())
@@ -113,5 +118,5 @@ else:
 # ---------- DISCLAIMER ----------
 st.markdown("---")
 st.caption(
-    "This calculator provides estimates for information and entertainment purposes only."
+    "All contents and calculation estimates are for entertainment purposes only."
 )
