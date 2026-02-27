@@ -6,8 +6,19 @@ st.title("Proof Down Calculator")
 
 # Inputs
 pour_size_oz = st.number_input("Pour Size (oz)", min_value=0.0, value=1.0)
-starting_proof = st.number_input("Starting Proof", min_value=0.0, value=135.0)
-desired_proof = st.number_input("Desired Proof", min_value=0.0, value=80.0)
+starting_proof = st.number_input(
+    "Starting Proof",
+    min_value=0,
+    step=1,
+    value=130
+)
+
+desired_proof = st.number_input(
+    "Desired Proof",
+    min_value=0,
+    step=1,
+    value=107
+)
 
 if desired_proof >= starting_proof:
     st.error("Desired proof must be lower than starting proof.")
@@ -30,10 +41,16 @@ else:
 
     st.subheader("Results")
     st.write(f"Add this much water: **{water_oz:.2f} oz**")
-    st.write(f"OR add this much water: **{water_ml:.2f} mL**")
+    st.write(f"OR **{water_ml:.2f} mL**")
 
     with st.expander("Back of the Envelope"):
         st.write(f"Starting Proof ABV: {starting_abv * 100:.2f}%")
         st.write(f"Desired Proof ABV: {desired_abv * 100:.2f}%")
         st.write(f"Total Alcohol: {alcohol_oz:.3f} oz")
         st.write(f"Total Volume Needed: {final_volume_oz:.2f} oz")
+
+
+st.markdown("---")
+st.caption(
+    "This calculator provides estimates for information and entertainment purposes only."
+)
