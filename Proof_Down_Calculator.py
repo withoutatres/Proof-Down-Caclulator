@@ -134,7 +134,7 @@ else:
     color=alt.Color(
         "Component:N",
         scale=alt.Scale(
-            domain=["Alcohol Content", "Water Content"],
+            domain=["final_abv", "water_pct"],
             range=["#8B4513", "#A52A2A"]  # brown & red
         ),
         legend=None
