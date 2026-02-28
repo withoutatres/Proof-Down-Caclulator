@@ -123,25 +123,25 @@ else:
     st.write(f"Add **{water_display:.2f} {unit}** of water")
 
     # ---------- VISUAL INDICATOR ----------
-    final_abv = desired_proof / 2
-    water_pct = 100 - final_abv
+    #final_abv = desired_proof / 2
+    #water_pct = 100 - final_abv
 
-    import altair as alt
+    #import altair as alt
     
-    chart = alt.Chart(composition_df).mark_bar().encode(
-    x=alt.X("Percentage:Q", scale=alt.Scale(domain=[0, 100])),
-    y=alt.Y("Component:N", sort=None),
-    color=alt.Color(
-        "Component:N",
-        scale=alt.Scale(
-            domain=["final_abv", "water_pct"],
-            range=["#8B4513", "#A52A2A"]  # brown & red
-        ),
-        legend=None
-    )
-    )
+    #chart = alt.Chart(composition_df).mark_bar().encode(
+    #x=alt.X("Percentage:Q", scale=alt.Scale(domain=[0, 100])),
+    #y=alt.Y("Component:N", sort=None),
+    #color=alt.Color(
+    #    "Component:N",
+    #    scale=alt.Scale(
+    #        domain=["final_abv", "water_pct"],
+    #        range=["#8B4513", "#A52A2A"]  # brown & red
+    #    ),
+    #    legend=None
+    #)
+    #)
     
-    st.altair_chart(chart, use_container_width=True)
+    #st.altair_chart(chart, use_container_width=True)
 
     # ---------- DETAILS ----------
     with st.expander("Back of the Envelope"):
