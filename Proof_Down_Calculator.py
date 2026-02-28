@@ -3,7 +3,7 @@ import streamlit as st
 OZ_TO_ML = 29.5735
 
 # ---------- TITLE ----------
-st.title("Without a Tres's Proof Down Calculator")
+st.title("Proof Down Calculator by Without a Tres")
 
 # ---------- INPUT MODE ----------
 strength_mode = st.radio(
