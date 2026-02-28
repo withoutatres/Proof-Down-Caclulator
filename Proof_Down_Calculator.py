@@ -95,7 +95,7 @@ else:
     st.write(f"Add **{water_display:.2f} {unit}** of water")
 
     # ---------- VISUAL INDICATOR ----------
-    final_abv = desired_proof / 2
+    final_abv = desired_strength / 2
     water_pct = 100 - final_abv
 
     import pandas as pd
