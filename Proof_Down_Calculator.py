@@ -2,34 +2,6 @@ import streamlit as st
 
 OZ_TO_ML = 29.5735
 
-# ---------- COLORED BAR HELPER ----------
-def colored_bar(label, fraction, color):
-    percent = int(fraction * 100)
-    st.markdown(
-        f"""
-        <div style="margin-bottom: 8px;">
-            <strong>{label}</strong>
-            <div style="
-                background-color: #eee;
-                border-radius: 6px;
-                height: 18px;
-                width: 100%;
-                overflow: hidden;
-            ">
-                <div style="
-                    background-color: {color};
-                    width: {percent}%;
-                    height: 100%;
-                    border-radius: 6px;
-                ">
-                </div>
-            </div>
-            <small>{percent}%</small>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
 # ---------- TITLE ----------
 st.title("Without a Tres's Proof Down Calculator")
 
@@ -123,7 +95,7 @@ else:
     st.write(f"Add **{water_display:.2f} {unit}** of water")
 
     # ---------- VISUAL INDICATOR ----------
-   final_abv = desired_proof / 2
+    final_abv = desired_proof / 2
     water_pct = 100 - final_abv
 
     import pandas as pd
