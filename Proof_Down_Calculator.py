@@ -49,7 +49,7 @@ mode = st.radio("Measurement Mode", ["Volume Mode", "Weight Mode"])
 # -----------------------------
 # CONSTANTS
 # -----------------------------
-ETHANOL_DENSITY = 0.789  # g/ml
+ETHANOL_DENSITY = 0.789
 WATER_DENSITY = 1.0
 ML_PER_OZ = 29.5735
 
@@ -57,7 +57,7 @@ starting_abv = starting_proof / 200
 desired_abv = desired_proof / 200
 
 # -----------------------------
-# VOLUME MODE
+# CALCULATIONS
 # -----------------------------
 if mode == "Volume Mode":
 
@@ -71,12 +71,7 @@ if mode == "Volume Mode":
     alcohol_oz = pour_size * starting_abv
     total_volume_needed = alcohol_oz / desired_abv
     water_oz = total_volume_needed - pour_size
-    water_ml = water_oz * ML_PER_OZ
-    water_g = water_ml * WATER_DENSITY
 
-# -----------------------------
-# WEIGHT MODE
-# -----------------------------
 else:
 
     spirit_weight_g = st.number_input(
@@ -95,10 +90,9 @@ else:
     total_volume_needed = alcohol_ml / desired_abv
     water_ml = total_volume_needed - spirit_ml
     water_oz = water_ml / ML_PER_OZ
-    water_g = water_ml * WATER_DENSITY
 
 # -----------------------------
-# ROUNDING TOGGLE
+# ROUNDING
 # -----------------------------
 round_mode = st.selectbox(
     "Bar Mode Rounding",
@@ -114,7 +108,7 @@ water_ml = water_oz * ML_PER_OZ
 water_g = water_ml * WATER_DENSITY
 
 # -----------------------------
-# RESULTS CARD (FIXED CONTRAST)
+# RESULTS CARD
 # -----------------------------
 st.markdown("---")
 st.subheader("💧 Water to Add")
@@ -127,7 +121,7 @@ st.markdown(f"""
     border:2px solid #d9a441;
     text-align:center;
     color:#3e2c1c;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
 ">
     <div style="font-size:32px; font-weight:700;">
         {water_oz:.2f} oz
@@ -142,23 +136,21 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # -----------------------------
-# FINAL COMPOSITION BAR
+# FINAL COMPOSITION BAR (FIXED)
 # -----------------------------
 st.subheader("Final Composition")
 
-final_abv_percent = desired_abv * 100
-water_percent = 100 - final_abv_percent
+final_abv_percent = round(desired_abv * 100, 1)
+water_percent = round(100 - final_abv_percent, 1)
 
 st.markdown(f"""
 <div style="
     width:100%;
-    height:42px;
+    background-color:#e6e6e6;
     border-radius:12px;
     overflow:hidden;
+    height:42px;
     display:flex;
-    font-weight:bold;
-    color:white;
-    text-align:center;
 ">
 
     <div style="
@@ -167,8 +159,11 @@ st.markdown(f"""
         display:flex;
         align-items:center;
         justify-content:center;
+        color:white;
+        font-weight:bold;
+        font-size:14px;
     ">
-        Alcohol {final_abv_percent:.0f}%
+        {final_abv_percent:.0f}%
     </div>
 
     <div style="
@@ -177,8 +172,11 @@ st.markdown(f"""
         display:flex;
         align-items:center;
         justify-content:center;
+        color:white;
+        font-weight:bold;
+        font-size:14px;
     ">
-        Water {water_percent:.0f}%
+        {water_percent:.0f}%
     </div>
 
 </div>
