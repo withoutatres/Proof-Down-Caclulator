@@ -31,7 +31,7 @@ else:
         "Starting Proof",
         min_value=40.0,
         max_value=200.0,
-        value=120.0,
+        value=125.0,
         step=0.1,
         format="%.1f"
     )
@@ -40,7 +40,7 @@ desired_proof = st.number_input(
     "Desired Proof (whole number)",
     min_value=40,
     max_value=int(starting_proof),
-    value=100,
+    value=105,
     step=1
 )
 
