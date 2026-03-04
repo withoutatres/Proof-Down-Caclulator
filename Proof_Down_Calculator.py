@@ -1,220 +1,193 @@
 import streamlit as st
-import pandas as pd
-import altair as alt
-from fractions import Fraction
 
-OZ_TO_ML = 29.5735
+st.set_page_config(page_title="Whiskey Proof Down Calculator", layout="centered")
 
-st.title("Without a Tres's Proof Down Calculator")
+st.title("🥃 Whiskey Proof Down Calculator")
 
 # -----------------------------
-# MODE TOGGLES
+# PRESET WHISKEY LEVELS
 # -----------------------------
-input_mode = st.radio(
-    "Spirit Input Mode",
-    ["Volume", "Weight (grams)"],
-    horizontal=True
+preset = st.selectbox(
+    "Preset Starting Proof",
+    [
+        "Custom",
+        "Bottled in Bond (100)",
+        "Barrel Proof (120)",
+        "High Barrel Proof (130)",
+        "Hazmat (140+)"
+    ]
 )
 
-bar_mode = st.toggle("Bar Mode (⅛ oz + 1 mL rounding)")
-
-# -----------------------------
-# STRENGTH INPUT
-# -----------------------------
-strength_mode = st.radio(
-    "Alcohol Strength Input",
-    ["Proof", "ABV (%)"],
-    horizontal=True
-)
-
-if strength_mode == "Proof":
-
+if preset == "Bottled in Bond (100)":
+    starting_proof = 100.0
+elif preset == "Barrel Proof (120)":
+    starting_proof = 120.0
+elif preset == "High Barrel Proof (130)":
+    starting_proof = 130.0
+elif preset == "Hazmat (140+)":
+    starting_proof = 140.0
+else:
     starting_proof = st.number_input(
         "Starting Proof",
-        min_value=0.0,
+        min_value=40.0,
+        max_value=200.0,
+        value=120.0,
         step=0.1,
-        format="%.1f",
-        value=130.0
+        format="%.1f"
     )
 
-    desired_proof = st.number_input(
-        "Desired Proof",
-        min_value=0,
-        step=1,
-        value=110
+desired_proof = st.number_input(
+    "Desired Proof (whole number)",
+    min_value=40,
+    max_value=int(starting_proof),
+    value=100,
+    step=1
+)
+
+mode = st.radio("Measurement Mode", ["Volume Mode", "Weight Mode"])
+
+# -----------------------------
+# CONSTANTS
+# -----------------------------
+ETHANOL_DENSITY = 0.789  # g/ml
+WATER_DENSITY = 1.0      # g/ml
+ML_PER_OZ = 29.5735
+
+starting_abv = starting_proof / 200
+desired_abv = desired_proof / 200
+
+# -----------------------------
+# VOLUME MODE
+# -----------------------------
+if mode == "Volume Mode":
+
+    pour_size = st.number_input(
+        "Pour Size (oz)",
+        min_value=0.1,
+        value=1.0,
+        step=0.1
     )
 
-    starting_abv = starting_proof / 2 / 100
-    desired_abv = desired_proof / 2 / 100
+    alcohol_oz = pour_size * starting_abv
+    total_volume_needed = alcohol_oz / desired_abv
+    water_oz = total_volume_needed - pour_size
+    water_ml = water_oz * ML_PER_OZ
+    water_g = water_ml * WATER_DENSITY
 
+# -----------------------------
+# WEIGHT MODE
+# -----------------------------
 else:
-    starting_abv_percent = st.number_input(
-        "Starting ABV (%)",
-        min_value=0.0,
-        max_value=100.0,
-        step=0.1,
-        value=65.0
-    )
 
-    desired_abv_percent = st.number_input(
-        "Desired ABV (%)",
-        min_value=0,
-        max_value=100,
-        step=1,
-        value=55
-    )
-
-    starting_abv = starting_abv_percent / 100
-    desired_abv = desired_abv_percent / 100
-    starting_proof = starting_abv_percent * 2
-    desired_proof = desired_abv_percent * 2
-
-# -----------------------------
-# DENSITY ESTIMATION (~20°C)
-# -----------------------------
-def estimate_density(abv):
-    percent = abv * 100
-    return 0.9982 - (0.00105 * percent) + (0.000003 * percent ** 2)
-
-density = estimate_density(starting_abv)
-
-# -----------------------------
-# SPIRIT INPUT
-# -----------------------------
-if input_mode == "Volume":
-
-    unit = st.selectbox("Volume Units", ["oz", "mL"])
-
-    spirit_amount = st.number_input(
-        f"Spirit Amount ({unit})",
-        min_value=0.0,
-        value=1.0 if unit == "oz" else 30.0
-    )
-
-    pour_oz = spirit_amount if unit == "oz" else spirit_amount / OZ_TO_ML
-
-else:
     spirit_weight_g = st.number_input(
-        "Spirit Weight (grams)",
-        min_value=0.0,
-        value=30.0
+        "Weight of Spirit (grams)",
+        min_value=1.0,
+        value=30.0,
+        step=1.0
     )
 
-    spirit_volume_ml = spirit_weight_g / density
-    pour_oz = spirit_volume_ml / OZ_TO_ML
-
-    st.caption(
-        f"Estimated density: {density:.3f} g/mL → "
-        f"{spirit_volume_ml:.2f} mL ({pour_oz:.2f} oz)"
+    spirit_ml = spirit_weight_g / (
+        (starting_abv * ETHANOL_DENSITY) +
+        ((1 - starting_abv) * WATER_DENSITY)
     )
 
+    alcohol_ml = spirit_ml * starting_abv
+    total_volume_needed = alcohol_ml / desired_abv
+    water_ml = total_volume_needed - spirit_ml
+    water_oz = water_ml / ML_PER_OZ
+    water_g = water_ml * WATER_DENSITY
+
 # -----------------------------
-# CALCULATION
+# ROUNDING TOGGLE
 # -----------------------------
-if desired_abv >= starting_abv:
-    st.error("Desired strength must be lower than starting strength.")
+round_mode = st.selectbox(
+    "Bar Mode Rounding",
+    ["Exact", "Nearest 1/4 oz", "Nearest 1/8 oz"]
+)
 
-elif pour_oz <= 0:
-    st.error("Spirit amount must be greater than zero.")
+if round_mode == "Nearest 1/4 oz":
+    water_oz = round(water_oz * 4) / 4
+elif round_mode == "Nearest 1/8 oz":
+    water_oz = round(water_oz * 8) / 8
 
-else:
-    alcohol_oz = pour_oz * starting_abv
-    final_volume_oz = alcohol_oz / desired_abv
-    water_oz = final_volume_oz - pour_oz
-    water_ml = water_oz * OZ_TO_ML
+water_ml = water_oz * ML_PER_OZ
+water_g = water_ml * WATER_DENSITY
 
-    # ---- BAR MODE ROUNDING ----
-    if bar_mode:
-        water_oz = round(water_oz * 8) / 8
-        water_ml = round(water_oz * OZ_TO_ML)
+# -----------------------------
+# RESULTS
+# -----------------------------
+st.markdown("---")
+st.subheader("💧 Water to Add")
 
-    # ---- FRACTION FORMATTER ----
-    def format_fraction_oz(value):
-        whole = int(value)
-        frac = value - whole
-        frac_part = Fraction(frac).limit_denominator(8)
+st.markdown(f"""
+<div style="
+    background-color:#fff4e6;
+    padding:20px;
+    border-radius:12px;
+    border:2px solid #ffcc80;
+    text-align:center;
+">
+    <div style="font-size:28px; font-weight:bold;">
+        {water_oz:.2f} oz
+    </div>
+    <div style="font-size:18px;">
+        {water_ml:.1f} ml
+    </div>
+    <div style="font-size:18px;">
+        {water_g:.1f} grams
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
-        if frac_part == 0:
-            return f"{whole} oz"
-        if whole == 0:
-            return f"{frac_part} oz"
-        return f"{whole} {frac_part} oz"
+# -----------------------------
+# FINAL COMPOSITION BAR
+# -----------------------------
+st.subheader("Final Composition")
 
-    # -----------------------------
-    # RESULTS
-    # -----------------------------
-    st.subheader("Water to Add")
+final_abv_percent = desired_abv * 100
+water_percent = 100 - final_abv_percent
 
-    col1, col2 = st.columns(2)
+st.markdown(f"""
+<div style="
+    width:100%;
+    height:40px;
+    border-radius:10px;
+    overflow:hidden;
+    display:flex;
+    font-weight:bold;
+    color:white;
+    text-align:center;
+">
 
-    with col1:
-        st.metric(
-            "Ounces",
-            format_fraction_oz(water_oz) if bar_mode else f"{water_oz:.2f} oz"
-        )
+    <div style="
+        width:{final_abv_percent}%;
+        background-color:#8B4513;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    ">
+        Alcohol {final_abv_percent:.0f}%
+    </div>
 
-    with col2:
-        st.metric(
-            "Milliliters (≈ grams)",
-            f"{water_ml:.0f} mL" if bar_mode else f"{water_ml:.2f} mL"
-        )
+    <div style="
+        width:{water_percent}%;
+        background-color:#4F81BD;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    ">
+        Water {water_percent:.0f}%
+    </div>
 
-    st.caption("1 mL of water ≈ 1 gram for scale measurements.")
-
-    # -----------------------------
-    # FINAL COMPOSITION STACKED BAR
-    # -----------------------------
-    final_abv_percent = desired_abv * 100
-    water_percent = 100 - final_abv_percent
-
-    composition_df = pd.DataFrame({
-        "Category": ["Final Blend", "Final Blend"],
-        "Component": ["Alcohol Content", "Water Content"],
-        "Percentage": [final_abv_percent, water_percent]
-    })
-
-    st.subheader("Final Composition")
-
-    stacked_chart = alt.Chart(composition_df).mark_bar().encode(
-        y=alt.Y("Category:N", axis=None),
-        x=alt.X(
-            "Percentage:Q",
-            stack="zero",
-            scale=alt.Scale(domain=[0, 100]),
-            title="Percent of Final Volume"
-        ),
-        color=alt.Color(
-            "Component:N",
-            scale=alt.Scale(
-                domain=["Alcohol Content", "Water Content"],
-                range=["#8B4513", "#4F81BD"]
-            ),
-            legend=alt.Legend(orient="bottom")
-        ),
-        tooltip=[
-            alt.Tooltip("Component:N"),
-            alt.Tooltip("Percentage:Q", format=".1f")
-        ]
-    ).properties(height=70)
-
-    st.altair_chart(stacked_chart, use_container_width=True)
-
-    # -----------------------------
-    # DETAILS
-    # -----------------------------
-    with st.expander("Back of the Envelope"):
-        st.write(f"Starting Proof: {starting_proof:.1f}")
-        st.write(f"Desired Proof: {desired_proof:.0f}")
-        st.write(f"Estimated Density: {density:.4f} g/mL")
-        st.write(f"Pure Alcohol: {alcohol_oz:.3f} oz")
-        st.write(f"Final Volume: {final_volume_oz:.2f} oz")
+</div>
+""", unsafe_allow_html=True)
 
 # -----------------------------
 # DISCLAIMER
 # -----------------------------
 st.markdown("---")
 st.caption(
-    "For educational and entertainment purposes only. "
-    "Please drink responsibly and comply with local laws. "
-    "Density values are estimated and suitable for tasting dilution, not laboratory calibration."
+    "This calculator provides estimates for informational and entertainment purposes only. "
+    "Results are approximate and not laboratory-grade measurements. "
+    "Please drink responsibly and comply with all applicable laws."
 )
