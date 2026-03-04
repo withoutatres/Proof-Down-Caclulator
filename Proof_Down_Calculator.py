@@ -5,7 +5,7 @@ from fractions import Fraction
 
 OZ_TO_ML = 29.5735
 
-st.title("Without a Tres's Proof Down Calculator")
+st.title("Proof Down Calculator")
 
 # ---------- MODE TOGGLES ----------
 input_mode = st.radio(
