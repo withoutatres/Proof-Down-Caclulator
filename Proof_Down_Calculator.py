@@ -124,13 +124,7 @@ st.markdown(f"""
     box-shadow:0 4px 10px rgba(0,0,0,0.08);
 ">
     <div style="font-size:32px; font-weight:700;">
-        {water_oz:.2f} oz
-    </div>
-    <div style="font-size:20px; margin-top:6px;">
-        {water_ml:.1f} ml
-    </div>
-    <div style="font-size:20px;">
-        {water_g:.1f} grams
+        {water_oz:.2f} oz &nbsp;/&nbsp; {water_ml:.1f} ml
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -157,7 +151,7 @@ st.markdown(f"""
         font-size:14px;
         padding:0;
     ">
-        {final_abv_percent:.0f}% ABV
+        {final_abv_percent:.0f}% Alcohol
     </td>
     <td style="
         width:{water_percent}%;
