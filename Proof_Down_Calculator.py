@@ -151,7 +151,7 @@ st.markdown(f"""
         font-size:14px;
         padding:0;
     ">
-        {final_abv_percent:.0f}% Alcohol
+        {final_abv_percent:.1f}% Alcohol
     </td>
     <td style="
         width:{water_percent}%;
@@ -163,7 +163,7 @@ st.markdown(f"""
         font-size:14px;
         padding:0;
     ">
-        {water_percent:.0f}% Water
+        {water_percent:.1f}% Water
     </td>
   </tr>
 </table>
