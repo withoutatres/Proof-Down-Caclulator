@@ -50,7 +50,7 @@ mode = st.radio("Measurement Mode", ["Volume Mode", "Weight Mode"])
 # CONSTANTS
 # -----------------------------
 ETHANOL_DENSITY = 0.789  # g/ml
-WATER_DENSITY = 1.0      # g/ml
+WATER_DENSITY = 1.0
 ML_PER_OZ = 29.5735
 
 starting_abv = starting_proof / 200
@@ -114,26 +114,28 @@ water_ml = water_oz * ML_PER_OZ
 water_g = water_ml * WATER_DENSITY
 
 # -----------------------------
-# RESULTS
+# RESULTS CARD (FIXED CONTRAST)
 # -----------------------------
 st.markdown("---")
 st.subheader("💧 Water to Add")
 
 st.markdown(f"""
 <div style="
-    background-color:#fff4e6;
-    padding:20px;
-    border-radius:12px;
-    border:2px solid #ffcc80;
+    background-color:#fbe9d0;
+    padding:25px;
+    border-radius:14px;
+    border:2px solid #d9a441;
     text-align:center;
+    color:#3e2c1c;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
 ">
-    <div style="font-size:28px; font-weight:bold;">
+    <div style="font-size:32px; font-weight:700;">
         {water_oz:.2f} oz
     </div>
-    <div style="font-size:18px;">
+    <div style="font-size:20px; margin-top:6px;">
         {water_ml:.1f} ml
     </div>
-    <div style="font-size:18px;">
+    <div style="font-size:20px;">
         {water_g:.1f} grams
     </div>
 </div>
@@ -150,8 +152,8 @@ water_percent = 100 - final_abv_percent
 st.markdown(f"""
 <div style="
     width:100%;
-    height:40px;
-    border-radius:10px;
+    height:42px;
+    border-radius:12px;
     overflow:hidden;
     display:flex;
     font-weight:bold;
