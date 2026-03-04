@@ -156,31 +156,39 @@ else:
 
     st.caption("1 mL of water ≈ 1 gram for scale measurements.")
 
-    # ---------- FINAL COMPOSITION STACKED BAR ----------
-    final_abv_percent = desired_abv * 100
-    water_percent = 100 - final_abv_percent
+  # ---------- FINAL COMPOSITION STACKED BAR ----------
+final_abv_percent = desired_abv * 100
+water_percent = 100 - final_abv_percent
 
-    composition_df = pd.DataFrame({
-        "Component": ["Alcohol Content", "Water Content"],
-        "Percentage": [final_abv_percent, water_percent]
-    })
+composition_df = pd.DataFrame({
+    "Component": ["Alcohol Content", "Water Content"],
+    "Percentage": [final_abv_percent, water_percent]
+})
 
-    st.subheader("Final Composition")
+st.subheader("Final Composition")
 
-    stacked_chart = alt.Chart(composition_df).mark_bar().encode(
-        x=alt.X("Percentage:Q", stack="normalize"),
-        color=alt.Color(
-            "Component:N",
-            scale=alt.Scale(
-                domain=["Alcohol Content", "Water Content"],
-                range=["#8B4513", "#4F81BD"]
-            ),
-            legend=alt.Legend(orient="bottom")
+stacked_chart = alt.Chart(composition_df).mark_bar().encode(
+    x=alt.X(
+        "Percentage:Q",
+        stack="zero",
+        scale=alt.Scale(domain=[0, 100]),
+        title="Percent of Final Volume"
+    ),
+    color=alt.Color(
+        "Component:N",
+        scale=alt.Scale(
+            domain=["Alcohol Content", "Water Content"],
+            range=["#8B4513", "#4F81BD"]  # brown alcohol, blue water
         ),
-        tooltip=["Component", "Percentage"]
-    ).properties(height=60)
+        legend=alt.Legend(orient="bottom")
+    ),
+    tooltip=[
+        alt.Tooltip("Component:N"),
+        alt.Tooltip("Percentage:Q", format=".1f")
+    ]
+).properties(height=60)
 
-    st.altair_chart(stacked_chart, use_container_width=True)
+st.altair_chart(stacked_chart, use_container_width=True)
 
     # ---------- DETAILS ----------
     with st.expander("Back of the Envelope"):
