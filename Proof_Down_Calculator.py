@@ -70,8 +70,7 @@ else:
     desired_proof = desired_abv_percent * 2
 
 # -----------------------------
-# DENSITY ESTIMATION (20°C approximation)
-# Good accuracy for spirits
+# DENSITY ESTIMATION (~20°C)
 # -----------------------------
 def estimate_density(abv):
     percent = abv * 100
@@ -124,12 +123,12 @@ else:
     water_oz = final_volume_oz - pour_oz
     water_ml = water_oz * OZ_TO_ML
 
-    # -------- BAR MODE ROUNDING --------
+    # ---- BAR MODE ROUNDING ----
     if bar_mode:
         water_oz = round(water_oz * 8) / 8
         water_ml = round(water_oz * OZ_TO_ML)
 
-    # -------- FRACTION FORMATTER --------
+    # ---- FRACTION FORMATTER ----
     def format_fraction_oz(value):
         whole = int(value)
         frac = value - whole
@@ -142,7 +141,7 @@ else:
         return f"{whole} {frac_part} oz"
 
     # -----------------------------
-    # RESULTS DISPLAY
+    # RESULTS
     # -----------------------------
     st.subheader("Water to Add")
 
@@ -169,6 +168,7 @@ else:
     water_percent = 100 - final_abv_percent
 
     composition_df = pd.DataFrame({
+        "Category": ["Final Blend", "Final Blend"],
         "Component": ["Alcohol Content", "Water Content"],
         "Percentage": [final_abv_percent, water_percent]
     })
@@ -176,6 +176,7 @@ else:
     st.subheader("Final Composition")
 
     stacked_chart = alt.Chart(composition_df).mark_bar().encode(
+        y=alt.Y("Category:N", axis=None),
         x=alt.X(
             "Percentage:Q",
             stack="zero",
@@ -194,7 +195,7 @@ else:
             alt.Tooltip("Component:N"),
             alt.Tooltip("Percentage:Q", format=".1f")
         ]
-    ).properties(height=60)
+    ).properties(height=70)
 
     st.altair_chart(stacked_chart, use_container_width=True)
 
