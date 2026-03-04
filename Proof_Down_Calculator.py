@@ -137,6 +137,7 @@ st.markdown(f"""
 
 # -----------------------------
 # FINAL COMPOSITION BAR (FIXED)
+# Use a table instead of flexbox — renders reliably in Streamlit markdown
 # -----------------------------
 st.subheader("Final Composition")
 
@@ -144,42 +145,34 @@ final_abv_percent = round(desired_abv * 100, 1)
 water_percent = round(100 - final_abv_percent, 1)
 
 st.markdown(f"""
-<div style="
-    width:100%;
-    background-color:#e6e6e6;
-    border-radius:12px;
-    overflow:hidden;
-    height:42px;
-    display:flex;
-">
-
-    <div style="
+<table style="width:100%; border-collapse:collapse; border-radius:12px; overflow:hidden; height:42px;">
+  <tr>
+    <td style="
         width:{final_abv_percent}%;
         background-color:#8B4513;
-        display:flex;
-        align-items:center;
-        justify-content:center;
+        text-align:center;
+        vertical-align:middle;
         color:white;
         font-weight:bold;
         font-size:14px;
+        padding:0;
     ">
-        {final_abv_percent:.0f}%
-    </div>
-
-    <div style="
+        {final_abv_percent:.0f}% ABV
+    </td>
+    <td style="
         width:{water_percent}%;
         background-color:#4F81BD;
-        display:flex;
-        align-items:center;
-        justify-content:center;
+        text-align:center;
+        vertical-align:middle;
         color:white;
         font-weight:bold;
         font-size:14px;
+        padding:0;
     ">
-        {water_percent:.0f}%
-    </div>
-
-</div>
+        {water_percent:.0f}% Water
+    </td>
+  </tr>
+</table>
 """, unsafe_allow_html=True)
 
 # -----------------------------
